@@ -2,9 +2,9 @@ version: '2'
 
 services:
   mongo_db:
-    image: mongo:latest
+    image: mongo:${mongo_version}
     volumes:
-      - post_db:/opt/data/db
+      - post_db:/data/db
     networks:
       reddit:
         aliases:
@@ -13,19 +13,19 @@ services:
   ui:
     build: ./ui
     env_file: ./.env
-    image: ${USERNAME}/ui:1.0
+    image: ${USERNAME}/ui:${ui_version}
     ports:
       - ${PORT}:${PORT}/tcp
     networks:
       - reddit
   post:
     build: ./post-py
-    image: ${USERNAME}/post:1.0
+    image: ${USERNAME}/post:${post_version}
     networks:
       - reddit
   comment:
     build: ./comment
-    image: ${USERNAME}/comment:1.0
+    image: ${USERNAME}/comment:${comment_version}
     networks:
       - reddit
 volumes:
