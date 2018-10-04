@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  mongo_db:
+    image: mongo:latest
+    volumes:
+      - post_db:/opt/data/db
+    networks:
+      reddit:
+        aliases:
+          - post_db
+          - comment_db
+  ui:
+    build: ./ui
+    env_file: ./.env
+    image: ${USERNAME}/ui:1.0
+    ports:
+      - ${PORT}:${PORT}/tcp
+    networks:
+      - reddit
+  post:
+    build: ./post-py
+    image: ${USERNAME}/post:1.0
+    networks:
+      - reddit
+  comment:
+    build: ./comment
+    image: ${USERNAME}/comment:1.0
+    networks:
+      - reddit
+volumes:
+  post_db:
+
+networks:
+  reddit:
